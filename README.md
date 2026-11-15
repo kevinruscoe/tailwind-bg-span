@@ -4,6 +4,8 @@ A CSS-only, Tailwind-based demo of a background spanning sibling sections. A
 decorative marker determines where the background starts; no section wrapper or
 runtime JavaScript is needed.
 
+[View the live demo](https://kevinruscoe.github.io/background-span/)
+
 ## Run the demo
 
 ```sh
@@ -55,8 +57,28 @@ content separately.
 
 ## Browser support
 
-The demo uses CSS subgrid, container query units, and CSS nesting. Its expected
-minimums, including Tailwind CSS 4's requirements, are Chrome/Edge 117,
-Safari/iOS Safari 16.5, and Firefox 128. Older browser versions have not been
-directly tested, and the demo does not include a fallback for unsupported
-browsers.
+The expected minimum versions include the requirements of
+[Tailwind CSS 4](https://tailwindcss.com/docs/compatibility#browser-support):
+
+| Browser | Minimum version | Release year |
+| --- | --- | --- |
+| Chrome | 117 | 2023 |
+| Edge | 117 | 2023 |
+| Safari / iOS Safari | 16.5 | 2023 |
+| Firefox | 128 | 2024 |
+
+These are feature-based estimates, not direct tests. Can I Use marks CSS nesting
+as partially supported in Chrome/Edge 117-119 and Safari 16.5-17.1; this demo
+uses the `&` nesting syntax supported by those versions. There is no fallback
+for unsupported browsers.
+
+Can I Use's worldwide usage estimates as of November 15, 2026:
+
+| Required CSS feature | Full support | Partial support |
+| --- | ---: | ---: |
+| [Subgrid](https://caniuse.com/css-subgrid) | 94.68% | 0% |
+| [Container query units](https://caniuse.com/css-container-query-units) | 96.03% | 0% |
+| [CSS nesting](https://caniuse.com/css-nesting) | 93.39% | 1.35% |
+
+These percentages describe each feature individually; they are not a combined
+support figure for the demo.
