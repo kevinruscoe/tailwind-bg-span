@@ -310,7 +310,7 @@
     container-type: inline-size;
   }
 
-  .bg-span-container > section {
+  .bg-span-container > * {
     grid-column: 2;
   }
 

@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "./bg-span.css";
 
-@source inline("bg-span-top-{0,1/4,1/2,3/4} bg-span-bottom-{0,1/4,1/2,3/4}");
-
 @layer base {
   :root {
     --page: #f7f8f6;

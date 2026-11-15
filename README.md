@@ -62,10 +62,10 @@ before the sections it should cover:
 - Set the background on the marker using a Tailwind background image or color
   class. Image URLs are relative to the generated `output.css`.
 
-The marker must be followed by the specified number of direct sibling
-`section` elements. The container uses CSS Grid for its direct children, so
-other grid layouts or intervening elements can affect placement. Unmarked
-sections may appear before or between spans.
+The marker must be followed by the specified number of direct sibling elements.
+The container uses CSS Grid for its direct children, so other grid layouts or
+intervening elements can affect placement. Unmarked elements may appear before
+or between spans.
 
 The top and bottom are covered with a solid mask, which defaults to white. Set
 `--bg-span-mask-color` on the container to match the surrounding background:
