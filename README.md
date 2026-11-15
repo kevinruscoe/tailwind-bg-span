@@ -2,6 +2,8 @@
 
 Three ways to paint one continuous background across sibling elements:
 
+[View the demos](https://kevinruscoe.github.io/tailwind-bg-span/)
+
 | Version | Demo | Technique | JavaScript |
 | --- | --- | --- | --- |
 | [Grid marker](./grid/) | [HTML](./grid/index.html) | Marker spans grid rows using subgrid | None |
