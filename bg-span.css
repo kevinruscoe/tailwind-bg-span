@@ -1,0 +1,57 @@
+@utility bg-span-container {
+  display: grid;
+  grid-template-columns: 0 minmax(0, 1fr);
+  container-type: inline-size;
+  isolation: isolate;
+
+  & > section {
+    grid-column: 2;
+  }
+}
+
+@utility bg-span {
+  display: grid;
+  grid-column: 1;
+  grid-row: span var(--span-count, 3);
+  grid-template-rows: subgrid;
+  width: 100cqw;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1;
+
+  &::before,
+  &::after {
+    content: "";
+    grid-column: 1;
+    background: var(--bg-span-mask-color, #fff);
+  }
+
+  &::before {
+    grid-row: 1;
+    height: var(--span-start-offset, 50%);
+    align-self: start;
+  }
+
+  &::after {
+    grid-row: -2 / -1;
+    height: var(--span-end-offset, 50%);
+    align-self: end;
+  }
+}
+
+@utility bg-span-* {
+  --span-count: --value(integer);
+}
+
+@utility bg-span-top-* {
+  --span-start-offset: calc(--value(ratio) * 100%);
+  --span-start-offset: calc(--value(integer) * 1%);
+  --span-start-offset: --value([percentage], [length]);
+}
+
+@utility bg-span-bottom-* {
+  --span-end-offset: calc(--value(ratio) * 100%);
+  --span-end-offset: calc(--value(integer) * 1%);
+  --span-end-offset: --value([percentage], [length]);
+}

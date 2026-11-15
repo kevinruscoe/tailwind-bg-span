@@ -1,10 +1,26 @@
-# Background span demo
+# Tailwind background span utility
 
-A CSS-only, Tailwind-based demo of a background spanning sibling sections. A
+A CSS-only Tailwind CSS 4 utility for backgrounds spanning sibling sections. A
 decorative marker determines where the background starts; no section wrapper or
 runtime JavaScript is needed.
 
-[View the live demo](https://kevinruscoe.github.io/background-span/)
+[View the live demo](https://kevinruscoe.github.io/tailwind-bg-span/)
+
+## Install
+
+Copy [`bg-span.css`](./bg-span.css) into your Tailwind CSS 4 project and import
+it in your Tailwind entry stylesheet:
+
+```css
+@import "tailwindcss";
+@import "./bg-span.css";
+```
+
+Adjust the path if you copy the file elsewhere, then rebuild your Tailwind CSS.
+Tailwind generates the utilities used in your project's scanned source files.
+The utility file is Tailwind source CSS, not a browser-ready stylesheet; it
+must be processed by Tailwind. For the browser support listed below, use a build
+that flattens CSS nesting, such as the Tailwind CLI's `--optimize` option.
 
 ## Run the demo
 
@@ -14,7 +30,8 @@ npm run build
 ```
 
 Open `index.html` in a browser. Run `npm run watch` to rebuild while editing, or
-run `npm run build` after changing the HTML or utility CSS.
+run `npm run build` after changing the HTML or utility CSS. Both commands flatten
+the nested Tailwind source rules in the generated CSS.
 
 ## Usage
 
@@ -50,10 +67,17 @@ The marker must be followed by the specified number of direct sibling
 other grid layouts or intervening elements can affect placement. Unmarked
 sections may appear before or between spans.
 
-The top and bottom are covered with the solid `--page` color, which must match
-the surrounding background. These masks will not reproduce an underlying
-image or gradient. Background images are decorative; provide meaningful image
-content separately.
+The top and bottom are covered with a solid mask, which defaults to white. Set
+`--bg-span-mask-color` on the container to match the surrounding background:
+
+```css
+.my-page {
+  --bg-span-mask-color: #f7f8f6;
+}
+```
+
+These masks will not reproduce an underlying image or gradient. Background
+images are decorative; provide meaningful image content separately.
 
 ## Browser support
 
@@ -64,13 +88,12 @@ The expected minimum versions include the requirements of
 | --- | --- | --- |
 | Chrome | 117 | 2023 |
 | Edge | 117 | 2023 |
-| Safari / iOS Safari | 16.5 | 2023 |
+| Safari / iOS Safari | 16.4 | 2023 |
 | Firefox | 128 | 2024 |
 
-These are feature-based estimates, not direct tests. Can I Use marks CSS nesting
-as partially supported in Chrome/Edge 117-119 and Safari 16.5-17.1; this demo
-uses the `&` nesting syntax supported by those versions. There is no fallback
-for unsupported browsers.
+These are feature-based estimates, not direct tests. The demo's optimized build
+does not require native CSS nesting. There is no fallback for unsupported
+browsers.
 
 Can I Use's worldwide usage estimates as of November 15, 2026:
 
@@ -78,7 +101,6 @@ Can I Use's worldwide usage estimates as of November 15, 2026:
 | --- | ---: | ---: |
 | [Subgrid](https://caniuse.com/css-subgrid) | 94.68% | 0% |
 | [Container query units](https://caniuse.com/css-container-query-units) | 96.03% | 0% |
-| [CSS nesting](https://caniuse.com/css-nesting) | 93.39% | 1.35% |
 
 These percentages describe each feature individually; they are not a combined
 support figure for the demo.
