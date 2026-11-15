@@ -1,0 +1,47 @@
+@utility bg-span-container {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: anchor(--bg-span-start 50%);
+    bottom: anchor(--bg-span-end 50%);
+    z-index: -1;
+    background: var(--bg-span-image, none) center / cover no-repeat;
+  }
+
+  @supports not (top: anchor(--bg-span-start 50%)) {
+    &::after {
+      top: var(--bg-span-top, auto);
+      bottom: var(--bg-span-bottom, auto);
+    }
+  }
+}
+
+@utility bg-span {
+  anchor-name: --bg-span-start;
+
+  &:not(.bg-span-2):not(.bg-span-4) + * + * {
+    anchor-name: --bg-span-end;
+  }
+}
+
+@utility bg-span-2 {
+  &.bg-span + * {
+    anchor-name: --bg-span-end;
+  }
+}
+
+@utility bg-span-3 {
+  &.bg-span + * + * {
+    anchor-name: --bg-span-end;
+  }
+}
+
+@utility bg-span-4 {
+  &.bg-span + * + * + * {
+    anchor-name: --bg-span-end;
+  }
+}

@@ -1,0 +1,48 @@
+@import "tailwindcss" source(none);
+@import "./bg-span.css";
+
+@source "./index.html";
+
+@layer base {
+  :root {
+    --page: #f7f8f6;
+    --bg-span-mask-color: var(--page);
+  }
+
+  body {
+    margin: 0;
+    background: var(--page);
+    color: #23332d;
+    font: 16px/1.5 system-ui, sans-serif;
+  }
+
+  header {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  h1 {
+    margin-block: 0.67em;
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  section {
+    min-height: 220px;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  section + section,
+  .bg-span:not(:first-child) + section {
+    border-top: 1px dashed #7c9a8d;
+  }
+}

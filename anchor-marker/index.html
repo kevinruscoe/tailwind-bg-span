@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background spans with anchor-positioned markers</title>
+  <link rel="stylesheet" href="output.css">
+  <script type="module">
+    const status = document.querySelector("#anchor-support");
+    if (CSS.supports("top", "anchor(--bg-span-a-start 50%)")) {
+      status.textContent = "Using native CSS anchor positioning.";
+    } else {
+      try {
+        const { default: polyfill } = await import("https://unpkg.com/@oddbird/css-anchor-positioning@0.10.2/dist/css-anchor-positioning-fn.js");
+        await polyfill();
+        status.textContent = "OddBird's anchor positioning polyfill loaded.";
+      } catch (error) {
+        status.textContent = "The anchor positioning polyfill could not be loaded. See the browser console.";
+        console.error("Failed to load the anchor positioning polyfill:", error);
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Background spans with anchor-positioned markers</h1>
+    <p>Add <code>bg-span-container</code> to the parent and a <code>bg-span</code> marker before the sections.</p>
+    <p>Each marker uses a different name: <code>bg-span-a</code> or <code>bg-span-b</code>. Use <code>bg-span-2</code> or <code>bg-span-4</code> to change the default count of three.</p>
+    <p id="anchor-support" role="status">Checking anchor positioning support...</p>
+  </header>
+  <main class="bg-span-container">
+    <section>
+      <h2>Before the first span</h2>
+      <p>Unmarked sections can appear before or between spans.</p>
+    </section>
+
+    <div class="bg-span bg-span-a bg-span-4 bg-[url('./background.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Four-section span</h2>
+      <p>The background starts halfway down this section.</p>
+    </section>
+    <section class="min-h-[300px]">
+      <h2>Taller middle section</h2>
+      <p>The image continues across differently sized siblings.</p>
+    </section>
+    <section>
+      <h2>Another middle section</h2>
+    </section>
+    <section>
+      <h2>End section</h2>
+      <p>The background ends halfway down this section.</p>
+    </section>
+
+    <section>
+      <h2>Between spans</h2>
+      <p>This section has no background.</p>
+    </section>
+
+    <div class="bg-span bg-span-b bg-span-2 bg-[url('./background-warm.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Two-section span</h2>
+      <p>This marker has a different name and image.</p>
+    </section>
+    <section class="min-h-[300px]">
+      <h2>End section</h2>
+    </section>
+    <section>
+      <h2>After the spans</h2>
+    </section>
+  </main>
+</body>
+</html>

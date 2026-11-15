@@ -1,0 +1,59 @@
+@utility bg-span-container {
+  position: relative;
+  isolation: isolate;
+}
+
+@utility bg-span {
+  position: absolute;
+  inset-inline: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+@utility bg-span-a {
+  top: anchor(--bg-span-a-start 50%);
+  bottom: anchor(--bg-span-a-end 50%);
+
+  & + * {
+    anchor-name: --bg-span-a-start;
+  }
+
+  &:not(.bg-span-2):not(.bg-span-4) + * + * + * {
+    anchor-name: --bg-span-a-end;
+  }
+}
+
+@utility bg-span-b {
+  top: anchor(--bg-span-b-start 50%);
+  bottom: anchor(--bg-span-b-end 50%);
+
+  & + * {
+    anchor-name: --bg-span-b-start;
+  }
+
+  &:not(.bg-span-2):not(.bg-span-4) + * + * + * {
+    anchor-name: --bg-span-b-end;
+  }
+}
+
+@utility bg-span-2 {
+  &.bg-span-a + * + * {
+    anchor-name: --bg-span-a-end;
+  }
+
+  &.bg-span-b + * + * {
+    anchor-name: --bg-span-b-end;
+  }
+}
+
+@utility bg-span-4 {
+  &.bg-span-a + * + * + * + * {
+    anchor-name: --bg-span-a-end;
+  }
+
+  &.bg-span-b + * + * + * + * {
+    anchor-name: --bg-span-b-end;
+  }
+}

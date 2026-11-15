@@ -6,7 +6,6 @@
       "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-violet-100: oklch(94.3% .029 294.588);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -260,7 +259,6 @@
 
   :root {
     --page: #f7f8f6;
-    --bg-span-mask-color: var(--page);
   }
 
   body {
@@ -303,95 +301,48 @@
 @layer components;
 
 @layer utilities {
-  .bg-span-container {
-    isolation: isolate;
-    grid-template-columns: 0 minmax(0, 1fr);
-    display: grid;
-    container-type: inline-size;
-  }
-
-  .bg-span-container > * {
-    grid-column: 2;
-  }
-
-  .relative {
-    position: relative;
-  }
-
   .bg-span {
-    grid-column: 1;
-    grid-row: span var(--span-count, 3);
-    grid-template-rows: subgrid;
     z-index: -1;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 100cqw;
-    display: grid;
+    position: absolute;
+    inset-inline: 0;
   }
 
-  .bg-span:before, .bg-span:after {
-    content: "";
-    background: var(--bg-span-mask-color, #fff);
-    grid-column: 1;
+  .bg-span-container {
+    isolation: isolate;
+    position: relative;
   }
 
-  .bg-span:before {
-    height: var(--span-start-offset, 50%);
-    grid-row: 1;
-    align-self: start;
+  .bg-span-a {
+    top: anchor(--bg-span-a-start 50%);
+    bottom: anchor(--bg-span-a-end 50%);
   }
 
-  .bg-span:after {
-    height: var(--span-end-offset, 50%);
-    grid-row: -2 / -1;
-    align-self: end;
+  .bg-span-a + * {
+    anchor-name: --bg-span-a-start;
   }
 
-  .container {
-    width: 100%;
+  .bg-span-a:not(.bg-span-2):not(.bg-span-4) + * + * + * {
+    anchor-name: --bg-span-a-end;
   }
 
-  @media (min-width: 40rem) {
-    .container {
-      max-width: 40rem;
-    }
+  .bg-span-b {
+    top: anchor(--bg-span-b-start 50%);
+    bottom: anchor(--bg-span-b-end 50%);
   }
 
-  @media (min-width: 48rem) {
-    .container {
-      max-width: 48rem;
-    }
+  .bg-span-b + * {
+    anchor-name: --bg-span-b-start;
   }
 
-  @media (min-width: 64rem) {
-    .container {
-      max-width: 64rem;
-    }
-  }
-
-  @media (min-width: 80rem) {
-    .container {
-      max-width: 80rem;
-    }
-  }
-
-  @media (min-width: 96rem) {
-    .container {
-      max-width: 96rem;
-    }
-  }
-
-  .grid {
-    display: grid;
+  .bg-span-b:not(.bg-span-2):not(.bg-span-4) + * + * + * {
+    anchor-name: --bg-span-b-end;
   }
 
   .min-h-\[300px\] {
     min-height: 300px;
-  }
-
-  .bg-violet-100 {
-    background-color: var(--color-violet-100);
   }
 
   .bg-\[url\(\'\.\/background-warm\.svg\'\)\] {
@@ -402,81 +353,19 @@
     background-image: url("./background.svg");
   }
 
-  .bg-span-2 {
-    --span-count: 2;
+  .bg-span-2.bg-span-a + * + * {
+    anchor-name: --bg-span-a-end;
   }
 
-  .bg-span-3 {
-    --span-count: 3;
+  .bg-span-2.bg-span-b + * + * {
+    anchor-name: --bg-span-b-end;
   }
 
-  .bg-span-4 {
-    --span-count: 4;
+  .bg-span-4.bg-span-a + * + * + * + * {
+    anchor-name: --bg-span-a-end;
   }
 
-  .bg-span-bottom-0 {
-    --span-end-offset: calc(0 * 1%);
-  }
-
-  .bg-span-bottom-1\/2 {
-    --span-end-offset: calc(1 / 2 * 100%);
-  }
-
-  .bg-span-bottom-1\/4 {
-    --span-end-offset: calc(1 / 4 * 100%);
-  }
-
-  .bg-span-bottom-3\/4 {
-    --span-end-offset: calc(3 / 4 * 100%);
-  }
-
-  .bg-span-bottom-25 {
-    --span-end-offset: calc(25 * 1%);
-  }
-
-  .bg-span-bottom-\[27\%\] {
-    --span-end-offset: 27%;
-  }
-
-  .bg-span-bottom-\[32px\] {
-    --span-end-offset: 32px;
-  }
-
-  .bg-span-top-0 {
-    --span-start-offset: calc(0 * 1%);
-  }
-
-  .bg-span-top-1\/2 {
-    --span-start-offset: calc(1 / 2 * 100%);
-  }
-
-  .bg-span-top-1\/4 {
-    --span-start-offset: calc(1 / 4 * 100%);
-  }
-
-  .bg-span-top-3\/4 {
-    --span-start-offset: calc(3 / 4 * 100%);
-  }
-
-  .bg-span-top-\[37\%\] {
-    --span-start-offset: 37%;
-  }
-
-  @media (min-width: 48rem) {
-    .md\:bg-span-bottom-3\/4 {
-      --span-end-offset: calc(3 / 4 * 100%);
-    }
-
-    .md\:bg-span-bottom-\[32px\] {
-      --span-end-offset: 32px;
-    }
-
-    .md\:bg-span-top-1\/2 {
-      --span-start-offset: calc(1 / 2 * 100%);
-    }
-
-    .md\:bg-span-top-\[48px\] {
-      --span-start-offset: 48px;
-    }
+  .bg-span-4.bg-span-b + * + * + * + * {
+    anchor-name: --bg-span-b-end;
   }
 }

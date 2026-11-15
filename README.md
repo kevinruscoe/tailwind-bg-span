@@ -1,106 +1,166 @@
-# Tailwind background span utility
+# Tailwind background span experiments
 
-A CSS-only Tailwind CSS 4 utility for backgrounds spanning sibling sections. A
-decorative marker determines where the background starts; no section wrapper or
-runtime JavaScript is needed.
+Three ways to paint one continuous background across sibling elements:
 
-[View the live demo](https://kevinruscoe.github.io/tailwind-bg-span/)
+| Version | Demo | Technique | JavaScript |
+| --- | --- | --- | --- |
+| [Grid marker](./grid/) | [HTML](./grid/index.html) | Marker spans grid rows using subgrid | None |
+| [Marker-free anchors](./anchor-marker-free/) | [HTML](./anchor-marker-free/index.html) | First and last siblings anchor the container's pseudo-element | Local fallback for browsers without anchors |
+| [Anchor marker](./anchor-marker/) | [HTML](./anchor-marker/index.html) | An absolutely positioned marker is anchored to siblings | Optional OddBird polyfill for browsers without anchors |
+
+Each folder contains only that version's demo, Tailwind utility, and assets.
+The root package is shared build tooling; the generated stylesheets are
+included. The versions use the same class names with different meanings:
+**import only one version of `bg-span.css` in a project.**
+
+## Run the demos
+
+```sh
+npm ci
+npm run build
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+Open [grid](http://127.0.0.1:8000/grid/),
+[marker-free anchors](http://127.0.0.1:8000/anchor-marker-free/), or
+[anchor marker](http://127.0.0.1:8000/anchor-marker/). HTTP also lets the
+OddBird polyfill read local stylesheets; opening files directly may not work.
+Use `npm run build:grid`, `npm run build:marker-free`, or
+`npm run build:anchor-marker` to build one version; corresponding `watch:*`
+scripts rebuild on changes.
 
 ## Install
 
-Copy [`bg-span.css`](./bg-span.css) into your Tailwind CSS 4 project and import
-it in your Tailwind entry stylesheet:
+Copy the chosen folder's `bg-span.css` to a Tailwind CSS 4 project and import
+it in the Tailwind entry stylesheet:
 
 ```css
 @import "tailwindcss";
 @import "./bg-span.css";
 ```
 
-Adjust the path if you copy the file elsewhere, then rebuild your Tailwind CSS.
-Tailwind generates the utilities used in your project's scanned source files.
-The utility file is Tailwind source CSS, not a browser-ready stylesheet; it
-must be processed by Tailwind. For the browser support listed below, use a build
-that flattens CSS nesting, such as the Tailwind CLI's `--optimize` option.
+Rebuild Tailwind after changing the HTML. The utility files are Tailwind source,
+not browser-ready CSS. The included optimized builds flatten CSS nesting.
+Each demo build scans only its own `index.html`; use your project's source
+configuration when integrating it.
+Copy `bg-span-polyfill.js` too if using the marker-free fallback.
+Background image URLs are relative to the compiled stylesheet.
 
-## Run the demo
-
-```sh
-npm ci
-npm run build
-```
-
-Open `index.html` in a browser. Run `npm run watch` to rebuild while editing, or
-run `npm run build` after changing the HTML or utility CSS. Both commands flatten
-the nested Tailwind source rules in the generated CSS.
-
-## Usage
-
-Add `bg-span-container` to the parent and put a `bg-span` marker immediately
-before the sections it should cover:
+## 1. Grid marker
 
 ```html
 <main class="bg-span-container">
-  <div
-    class="bg-span bg-span-3 bg-span-top-1/2 bg-span-bottom-1/4 bg-[url('./background.svg')]"
-    aria-hidden="true"
-  ></div>
-  <section>First section</section>
-  <section>Middle section</section>
-  <section>Last section</section>
+  <div class="bg-span bg-span-3 bg-span-top-1/2 bg-span-bottom-1/4 bg-[url('./background.svg')]" aria-hidden="true"></div>
+  <section>First</section>
+  <section>Middle</section>
+  <section>Last</section>
 </main>
 ```
 
-- `bg-span` spans three sections by default. Use a positive integer such as
-  `bg-span-4` to change the count.
-- `bg-span-top-*` and `bg-span-bottom-*` set the offsets from the top of the
-  first section and bottom of the last section. Both default to `1/2`. Fractions,
-  integer percentages, and arbitrary percentages or lengths are supported, for
-  example `bg-span-top-1/4`, `bg-span-bottom-25`, and
-  `bg-span-bottom-[32px]`.
-- Use Tailwind variants for responsive offsets, such as
-  `md:bg-span-top-1/2`.
-- Set the background on the marker using a Tailwind background image or color
-  class. Image URLs are relative to the generated `output.css`.
+- The marker precedes the consecutive direct children. `bg-span` defaults to
+  three; a positive integer such as `bg-span-4` selects a different count.
+- Top and bottom offsets default to `1/2`. Fractional, integer-percent, and
+  arbitrary percentage or length values are supported, as are responsive
+  variants such as `md:bg-span-top-1/2`.
+- The container is a grid, so other grid layouts or intervening elements can
+  affect placement. There is no fallback for missing subgrid or container units.
+- Solid masks hide the ends of the image. Set `--bg-span-mask-color` on the
+  container to match the surrounding color; masks cannot reproduce an
+  underlying image or gradient.
 
-The marker must be followed by the specified number of direct sibling elements.
-The container uses CSS Grid for its direct children, so other grid layouts or
-intervening elements can affect placement. Unmarked elements may appear before
-or between spans.
+## 2. Marker-free anchors
 
-The top and bottom are covered with a solid mask, which defaults to white. Set
-`--bg-span-mask-color` on the container to match the surrounding background:
-
-```css
-.my-page {
-  --bg-span-mask-color: #f7f8f6;
-}
+```html
+<main class="bg-span-container [--bg-span-image:url('./background.svg')]">
+  <section class="bg-span">First</section>
+  <section>Middle</section>
+  <section>Last</section>
+</main>
 ```
 
-These masks will not reproduce an underlying image or gradient. Background
-images are decorative; provide meaningful image content separately.
+- Put `bg-span` on the first direct child; three children are covered by
+  default. `bg-span-2`, `bg-span-3`, and `bg-span-4` select a count. Set the
+  image or color on the container using `--bg-span-image`.
+- One span is supported per container, with halfway offsets only. Arbitrary
+  counts and responsive offsets are not implemented. The specified number of
+  consecutive direct siblings must exist.
+- The container's `::after` draws the background, so it cannot be used for
+  something else. The utility also assigns `anchor-name` to the first and last
+  children.
+- In browsers without native anchors, include the local fallback:
+
+  ```html
+  <script src="bg-span-polyfill.js" defer></script>
+  ```
+
+  This is specific to this sample, not a general anchor polyfill. It requires
+  JavaScript and `ResizeObserver`; it observes size changes and viewport
+  resizing. Containers, direct children, and start classes must remain unchanged
+  after initialization. Transformed children or containers, and scrolling
+  containers, are not supported.
+
+## 3. Anchor marker
+
+```html
+<main class="bg-span-container">
+  <div class="bg-span bg-span-a bg-span-4 bg-[url('./background.svg')]" aria-hidden="true"></div>
+  <section>First</section>
+  <section>Middle</section>
+  <section>Middle</section>
+  <section>Last</section>
+</main>
+```
+
+- The absolutely positioned marker carries the background and does not
+  participate in grid layout. Three children are covered by default;
+  `bg-span-2` and `bg-span-4` select a different count.
+- Each marker needs its own anchor name. This sample provides `bg-span-a` and
+  `bg-span-b`, each usable once in the document. Reusing one can target the
+  wrong siblings. Additional spans need explicitly named utilities.
+- Counts are limited to 2 through 4, with halfway offsets only. The specified
+  consecutive direct siblings must exist, without intervening markers. The
+  utility assigns `anchor-name` to the first and last children.
+- The demo loads [OddBird's polyfill](https://github.com/oddbird/css-anchor-positioning)
+  0.10.2 from unpkg when native anchor positioning is unavailable. This needs
+  JavaScript, a network connection, and HTTP-served stylesheets. The polyfill
+  does not support dynamically added or removed anchors or targets, and does
+  not fill gaps in browsers with partial native anchor support.
+
+  To include the same fallback in another page:
+
+  ```html
+  <script type="module">
+    if (!CSS.supports("top", "anchor(--bg-span-a-start 50%)")) {
+      const { default: polyfill } = await import("https://unpkg.com/@oddbird/css-anchor-positioning@0.10.2/dist/css-anchor-positioning-fn.js");
+      await polyfill();
+    }
+  </script>
+  ```
 
 ## Browser support
 
-The expected minimum versions include the requirements of
-[Tailwind CSS 4](https://tailwindcss.com/docs/compatibility#browser-support):
+Estimated minimum versions for these examples, including
+[Tailwind CSS 4's requirements](https://tailwindcss.com/docs/compatibility):
 
-| Browser | Minimum version | Release year |
+| Browser | Grid marker | Native anchors (both anchor examples) |
 | --- | --- | --- |
-| Chrome | 117 | 2023 |
-| Edge | 117 | 2023 |
-| Safari / iOS Safari | 16.4 | 2023 |
-| Firefox | 128 | 2024 |
+| Chrome / Edge | 117 (2023) | 125 (2024) |
+| Safari / iOS Safari | 16.4 (2023) | 26 (2025) |
+| Firefox | 128 (2024) | 147 (2026) |
 
-These are feature-based estimates, not direct tests. The demo's optimized build
-does not require native CSS nesting. There is no fallback for unsupported
-browsers.
+These are feature-based estimates, not comprehensive browser tests. Can I Use
+reports partial support for the wider anchor-positioning specification in
+many of these versions. The native examples were tested in Chromium; both
+fallbacks were tested in Firefox 139 for the supplied layouts and resizing.
+Other versions and use cases still need testing.
 
-Can I Use's worldwide usage estimates as of November 15, 2026:
+Can I Use's worldwide usage estimates on November 15, 2026:
 
-| Required CSS feature | Full support | Partial support |
+| Feature | Full support | Partial support |
 | --- | ---: | ---: |
 | [Subgrid](https://caniuse.com/css-subgrid) | 94.68% | 0% |
 | [Container query units](https://caniuse.com/css-container-query-units) | 96.03% | 0% |
+| [CSS anchor positioning](https://caniuse.com/css-anchor-positioning) | 2.75% | 85.2% |
 
-These percentages describe each feature individually; they are not a combined
-support figure for the demo.
+These are individual feature estimates, not combined support percentages for
+the examples or their fallbacks.

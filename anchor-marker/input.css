@@ -1,10 +1,11 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 @import "./bg-span.css";
+
+@source "./index.html";
 
 @layer base {
   :root {
     --page: #f7f8f6;
-    --bg-span-mask-color: var(--page);
   }
 
   body {
