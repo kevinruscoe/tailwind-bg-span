@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background across sections</title>
+  <link rel="stylesheet" href="output.css">
+</head>
+<body>
+  <header>
+    <h1>Background span utilities</h1>
+    <p>Add <code>bg-span-container</code> to the parent and a <code>bg-span</code> marker before sibling sections. It spans three sections by default; use a positive count such as <code>bg-span-4</code> to change it.</p>
+    <p>Set each marker's image with a Tailwind class such as <code>bg-[url('./background.svg')]</code>.</p>
+    <p>Optional top and bottom offsets are 0, 1/4, 1/2, or 3/4. Both default to 1/2.</p>
+    <p>Both offsets accept arbitrary percentages or lengths, such as <code>bg-span-top-[37%]</code> and <code>bg-span-bottom-[32px]</code>.</p>
+    <p>Use responsive prefixes such as <code>md:bg-span-top-1/2</code> to change offsets at a breakpoint.</p>
+    <p>Run <code>npm run build</code> after changing the HTML or utility CSS.</p>
+  </header>
+  <main class="bg-span-container">
+    <section>
+      <h2>Before the first span</h2>
+      <p>Unmarked sections can appear before or between spans.</p>
+    </section>
+
+    <div class="bg-span bg-span-4 bg-span-top-1/2 bg-span-bottom-1/2 bg-[url('./background.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Four-section span</h2>
+      <p>Start: 1/2 from the top. End: 1/2 from the bottom.</p>
+    </section>
+    <section class="min-h-[300px]">
+      <h2>Middle section</h2>
+      <p>This section is taller.</p>
+    </section>
+    <section>
+      <h2>Another middle section</h2>
+      <p>The image continues through a fourth section.</p>
+    </section>
+    <section>
+      <h2>End section</h2>
+    </section>
+
+    <section>
+      <h2>Between spans</h2>
+      <p>The next marker automatically starts after this section.</p>
+    </section>
+
+    <div class="bg-span bg-span-top-1/4 bg-span-bottom-3/4 bg-[url('./background.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Quarter to quarter</h2>
+      <p>Start: 1/4 from the top. End: 3/4 from the bottom.</p>
+    </section>
+    <section>
+      <h2>Middle section</h2>
+    </section>
+    <section class="min-h-[300px]">
+      <h2>End section</h2>
+      <p>This section is taller.</p>
+    </section>
+
+    <div class="bg-span bg-span-top-0 bg-span-bottom-0 bg-[url('./background.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Full span</h2>
+      <p>Start: 0. End: 0.</p>
+    </section>
+    <section>
+      <h2>Middle section</h2>
+    </section>
+    <section>
+      <h2>End section</h2>
+    </section>
+
+    <div class="bg-span bg-span-2 bg-span-top-1/4 bg-span-bottom-1/4 bg-[url('./background-warm.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Two-section span</h2>
+      <p>The same utility can cover fewer sections, too.</p>
+    </section>
+    <section>
+      <h2>End section</h2>
+      <p>Both offsets are 1/4.</p>
+    </section>
+
+    <div class="bg-span bg-span-top-0 md:bg-span-top-1/2 bg-span-bottom-1/4 md:bg-span-bottom-3/4 bg-[url('./background.svg')]" aria-hidden="true"></div>
+    <section>
+      <h2>Responsive offsets</h2>
+      <p>Mobile start: 0. Medium screens and up: 1/2.</p>
+    </section>
+    <section>
+      <h2>Middle section</h2>
+      <p>Resize the browser to see the offsets change.</p>
+    </section>
+    <section>
+      <h2>End section</h2>
+      <p>Mobile end: 1/4. Medium screens and up: 3/4.</p>
+    </section>
+
+    <div class="bg-span bg-span-top-3/4 bg-[url('./background-warm.svg')]" aria-hidden="true"></div>
+    <section class="min-h-[300px]">
+      <h2>Different image</h2>
+      <p>Start: 3/4. The end uses the default 1/2.</p>
+    </section>
+    <section>
+      <h2>Middle section</h2>
+      <p>This marker has its own image URL.</p>
+    </section>
+    <section>
+      <h2>End section</h2>
+    </section>
+
+    <div class="bg-span bg-span-top-[37%] md:bg-span-top-[48px] bg-span-bottom-[27%] md:bg-span-bottom-[32px] bg-violet-100" aria-hidden="true"></div>
+    <section>
+      <h2>Arbitrary offsets</h2>
+      <p>Mobile: top 37%, bottom 27%. Medium screens and up: top 48px, bottom 32px.</p>
+    </section>
+    <section>
+      <h2>Middle section</h2>
+      <p>A Tailwind background color works too.</p>
+    </section>
+    <section class="min-h-[300px]">
+      <h2>End section</h2>
+    </section>
+
+    <section>
+      <h2>No background</h2>
+      <p>The image stops at the previous section.</p>
+    </section>
+  </main>
+</body>
+</html>
